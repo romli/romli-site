@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal - Romli</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .filter-container { margin: 20px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+        .filter-btn { 
+            padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; 
+            background: white; cursor: pointer; font-size: 0.85rem; transition: 0.3s;
+        }
+        .filter-btn.active { background: #000; color: #fff; border-color: #000; }
+        .pagination { margin-top: 30px; display: flex; justify-content: center; gap: 20px; align-items: center; }
+        .page-btn { padding: 10px 20px; border: 1px solid #eee; background: #fff; cursor: pointer; border-radius: 5px; }
+        .page-btn:disabled { color: #ccc; cursor: not-allowed; }
+        .category-tag { 
+            display: inline-block; background: #f0f0f0; padding: 2px 8px; 
+            border-radius: 4px; font-size: 0.75rem; color: #666; margin-bottom: 5px; text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" style="text-decoration:none; color:gray;">← Kembali ke Beranda</a>
+            <h1 style="margin-top:20px;">Journal</h1>
+            <p class="subtitle">Catatan, Opini, dan Strategi UMKM</p>
+        </header>
+
+        <div id="filter-bar" class="filter-container">
+            <button class="filter-btn active" onclick="filterBy('all')">Semua</button>
+        </div>
+
+        <div id="journal-list" class="grid">
+            <p>Memuat tulisan...</p>
+        </div>
+
+        <div class="pagination">
+            <button id="prevBtn" class="page-btn" onclick="changePage(-1)">Sebelumnya</button>
+            <span id="pageInfo">Halaman 1</span>
+            <button id="nextBtn" class="page-btn" onclick="changePage(1)">Berikutnya</button>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = { user: "romli", repo: "romli-site", perPage: 5 };
+        let allFiles = [];
+        let filteredFiles = [];
+        let currentPage = 1;
+        let currentCategory = 'all';
+
+        async function initJournal() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
+                const files = await res.json();
+                
+                // Ambil file .md, urutkan terbaru
+                allFiles = files.filter(f => f.name.endsWith('.md')).reverse();
+                
+                // Build Filter Buttons secara otomatis
+                buildFilters();
+                
+                // Jalankan filter pertama kali
+                filterBy('all');
+            } catch (e) {
+                document.getElementById('journal-list').innerHTML = "<p>Gagal memuat tulisan.</p>";
+            }
+        }
+
+        function buildFilters() {
+            const categories = new Set();
+            allFiles.forEach(f => {
+                const parts = f.name.split('-');
+                if(parts.length > 3) categories.add(parts[3]);
+            });
+
+            const filterBar = document.getElementById('filter-bar');
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
+                btn.onclick = () => filterBy(cat);
+                btn.setAttribute('data-cat', cat);
+                filterBar.appendChild(btn);
+            });
+        }
+
+        function filterBy(cat) {
+            currentCategory = cat;
+            currentPage = 1;
+            
+            // Update tampilan tombol aktif
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', (cat === 'all' && btn.innerText === 'Semua') || btn.getAttribute('data-cat') === cat);
+            });
+
+            if (cat === 'all') {
+                filteredFiles = allFiles;
+            } else {
+                filteredFiles = allFiles.filter(f => f.name.split('-')[3] === cat);
+            }
+            renderPage();
+        }
+
+        function renderPage() {
+            const list = document.getElementById('journal-list');
+            const start = (currentPage - 1) * CONFIG.perPage;
+            const end = start + CONFIG.perPage;
+            const pageFiles = filteredFiles.slice(start, end);
+
+            list.innerHTML = '';
+            
+            if(pageFiles.length === 0) {
+                list.innerHTML = "<p>Tidak ada tulisan di kategori ini.</p>";
+            }
+
+            pageFiles.forEach(file => {
+                const parts = file.name.split('-');
+                const tanggal = parts.slice(0,3).join('-');
+                const kategori = parts[3] || 'umum';
+                const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kategori.length + 1);
+
+                list.innerHTML += `
+                    <div class="card">
+                        <span class="category-tag">${kategori}</span>
+                        <h3 style="margin:5px 0 10px 0">${judul}</h3>
+                        <small style="color:gray">${tanggal}</small><br><br>
+                        <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;">Baca Selengkapnya →</a>
+                    </div>`;
+            });
+
+            // Update Pagination Info
+            document.getElementById('pageInfo').innerText = `Halaman ${currentPage}`;
+            document.getElementById('prevBtn').disabled = (currentPage === 1);
+            document.getElementById('nextBtn').disabled = (end >= filteredFiles.length);
+        }
+
+        function changePage(step) {
+            currentPage += step;
+            renderPage();
+            window.scrollTo(0,0);
+        }
+
+        initJournal();
+    </script>
+</body>
+</html>
