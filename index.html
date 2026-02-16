@@ -7,11 +7,46 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* CSS untuk Foto Profil */
+        .profile-pic-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #eee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        /* Style Tombol Lihat Journal */
+        .btn-journal {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .btn-journal:hover {
+            background-color: #f9f9f9;
+            border-color: #bbb;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <header>
+            <div class="profile-pic-container">
+                <img src="profile.jpg" alt="Romli" class="profile-pic" onerror="this.src='https://via.placeholder.com/150'">
+            </div>
             <h1>Romli</h1>
             <p class="subtitle">Digital Enthusiast & Strategist</p>
         </header>
@@ -33,8 +68,9 @@
             <div id="blog-list" class="grid">
                 <p>Memuat tulisan...</p>
             </div>
-            <div id="more-blog" style="margin-top:20px; text-align:center; display:none;">
-                <a href="https://github.com/romli/romli-site/tree/main/blog" target="_blank" style="text-decoration:none; color:gray; font-size:0.9rem;">Lihat Arsip Lainnya di GitHub →</a>
+            
+            <div style="text-align:center;">
+                <a href="journal.html" class="btn-journal">Lihat Journal →</a>
             </div>
         </section>
     </div>
@@ -55,7 +91,9 @@
                 const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
                 const text = await res.text();
                 document.getElementById('profile-content').innerHTML = marked.parse(text);
-            } catch (e) { console.error("Gagal muat profil"); }
+            } catch (e) { 
+                document.getElementById('profile-content').innerHTML = "Gagal memuat profil.";
+            }
         }
 
         async function loadBlog() {
@@ -63,24 +101,33 @@
             try {
                 const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
                 const files = await res.json();
+                
+                // Filter file .md dan ambil 3 terbaru saja
                 const mdFiles = files.filter(f => f.name.endsWith('.md')).reverse();
                 const limitedFiles = mdFiles.slice(0, 3);
                 
                 list.innerHTML = '';
+                if(limitedFiles.length === 0) {
+                    list.innerHTML = "<p>Belum ada tulisan.</p>";
+                    return;
+                }
+
                 limitedFiles.forEach(file => {
-                    const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11);
+                    // Logika pengambilan kategori dari nama file
+                    const parts = file.name.split('-');
+                    const kategori = parts[3] || 'umum';
+                    const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kategori.length + 1);
+                    
                     list.innerHTML += `
                         <div class="card">
-                            <span style="font-size:0.8rem;color:gray">${file.name.substring(0,10)}</span>
-                            <h3 style="margin:10px 0">${judul}</h3>
-                            <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;">Baca Tulisan →</a>
+                            <small style="text-transform:uppercase; color:gray; font-size:0.7rem;">${kategori}</small>
+                            <h3 style="margin:5px 0 10px 0">${judul}</h3>
+                            <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;font-size:0.85rem;">Baca Tulisan →</a>
                         </div>`;
                 });
-
-                if (mdFiles.length > 3) {
-                    document.getElementById('more-blog').style.display = 'block';
-                }
-            } catch (e) { list.innerHTML = "<p>Belum ada tulisan blog.</p>"; }
+            } catch (e) { 
+                list.innerHTML = "<p>Belum ada tulisan blog.</p>"; 
+            }
         }
 
         async function loadNow() {
@@ -90,7 +137,7 @@
                 const data = await res.text();
                 const rows = data.split('\n').slice(1); 
                 
-                // BATASAN: Sekarang menampilkan hingga 6 baris teratas
+                // Ambil maksimal 6 baris teratas
                 const limitedRows = rows.slice(0, 6);
                 
                 list.innerHTML = '';
