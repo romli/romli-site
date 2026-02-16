@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio & Journal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfdfd;
+            --text: #1a1a1a;
+            --accent: #2d3436;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 80px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-weight: 300;
+            color: #636e72;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        /* Card Style Modern */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid #f1f1f1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0984e3;
+            font-weight: 600;
+        }
+
+        .date {
+            font-size: 0.8rem;
+            color: #b2bec3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+
+        /* Responsif HP */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            header { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Nama Anda</h1>
+        <p class="subtitle">Digital Strategist • Writer • Thinker</p>
+    </header>
+
+    <div class="container">
+        <section id="portfolio">
+            <h2>Portfolio</h2>
+            <div id="portfolio-list" class="grid">
+                <div class="card">
+                    <span class="tag">Loading...</span>
+                    <h3>Menghubungkan Database...</h3>
+                    <p>Mohon tunggu sebentar.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog">
+            <h2>Journal</h2>
+            <div id="blog-list" class="grid">
+                <div class="card">
+                    <span class="date">Feb 16, 2026</span>
+                    <h3>Filosofi Desain Minimalis</h3>
+                    <p>Mengapa kurang adalah lebih dalam dunia digital yang bising...</p>
+                    <a href="#" style="color: var(--accent); font-weight: 600; text-decoration: none;">Baca Selengkapnya →</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Crafted with ❤️ via Gemini Mobile</p>
+    </footer>
+
+    <script>
+        // SCRIPT UNTUK GOOGLE SHEETS (Mirip cara inares.co.id)
+        // Ganti URL ini dengan URL Google Sheet CSV Anda nanti
+        const sheetURL = 'URL_GOOGLE_SHEET_ANDA_DI_SINI';
+
+        async function fetchPortfolio() {
+            try {
+                // Logika fetch data seperti yang Anda lakukan di inares.co.id
+                // Untuk sementara kita biarkan visualnya dulu
+                console.log("Fetching from Google Sheets...");
+            } catch (e) {
+                console.error("Gagal memuat data sheet");
+            }
+        }
+
+        fetchPortfolio();
+    </script>
+</body>
+          </html>
+          
