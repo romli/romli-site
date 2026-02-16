@@ -3,163 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Romli - Personal Site</title>
+    <title>Romli Nur Hidayat</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        /* CSS untuk Foto Profil */
-        .profile-pic-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .profile-pic {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #eee;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        /* Style Tombol Lihat Journal */
-        .btn-journal {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 12px 25px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-        .btn-journal:hover {
-            background-color: #f9f9f9;
-            border-color: #bbb;
-        }
-    </style>
 </head>
 <body>
+    <header>
+        <img src="profile.jpg" alt="Romli" onerror="this.src='https://via.placeholder.com/40'">
+        <h1>Romli Nur Hidayat</h1>
+    </header>
 
     <div class="container">
-        <header>
-            <div class="profile-pic-container">
-                <img src="profile.jpg" alt="Romli" class="profile-pic" onerror="this.src='https://via.placeholder.com/150'">
-            </div>
-            <h1>Romli</h1>
-            <p class="subtitle">Digital Enthusiast & Strategist</p>
-        </header>
-
-        <section id="about">
+        <section>
             <h2>Tentang</h2>
-            <div id="profile-content" class="card">Memuat profil...</div>
+            <div id="profile-content" class="card">Memuat...</div>
         </section>
 
-        <section id="now">
+        <section>
             <h2>/now</h2>
-            <div id="portfolio-list" class="grid">
-                <p>Memuat status terbaru...</p>
-            </div>
+            <div id="portfolio-list" class="grid"></div>
         </section>
 
-        <section id="journal">
-            <h2>Journal</h2>
-            <div id="blog-list" class="grid">
-                <p>Memuat tulisan...</p>
-            </div>
-            
-            <div style="text-align:center;">
-                <a href="journal.html" class="btn-journal">Lihat Journal →</a>
+        <section>
+            <h2>Journal Terbaru</h2>
+            <div id="blog-list" class="grid"></div>
+            <div style="text-align:center; margin-top:20px;">
+                <a href="journal.html" style="text-decoration:none; color:#333; font-weight:600; border:1px solid #ddd; padding:8px 16px; border-radius:8px; font-size:0.9rem;">Lihat Semua Journal →</a>
             </div>
         </section>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Romli Site • Managed via Mobile</p>
-    </footer>
+    <footer>&copy; 2026 Romli Nur Hidayat</footer>
+
+    <a href="https://wa.me/6282137652772?text=Halo%20Pak%20Romli%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </a>
 
     <script>
-        const CONFIG = {
-            user: "romli", 
-            repo: "romli-site",
-            sheetUrl: "https://docs.google.com/spreadsheets/d/1E2sWBE7Vh38L-Y4c2Q0UJTMExFpu2CKkWht21LcRKdk/gviz/tq?tqx=out:csv"
-        };
+        const CONFIG = { user: "romli", repo: "romli-site", sheetUrl: "https://docs.google.com/spreadsheets/d/1E2sWBE7Vh38L-Y4c2Q0UJTMExFpu2CKkWht21LcRKdk/gviz/tq?tqx=out:csv" };
+        async function load() {
+            const p = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
+            document.getElementById('profile-content').innerHTML = marked.parse(await p.text());
+            
+            const b = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
+            const files = await b.json();
+            const latest = files.filter(f => f.name.endsWith('.md')).reverse().slice(0,3);
+            const bList = document.getElementById('blog-list');
+            latest.forEach(f => {
+                const k = f.name.split('-')[3] || 'umum';
+                const j = f.name.replace(/-/g, ' ').replace('.md', '').substring(11 + k.length + 1);
+                bList.innerHTML += `<div class="card"><div class="category-tag">${k.replace('.',' ')}</div><h3 style="margin:10px 0">${j}</h3><a href="post.html?file=${f.name}" style="color:black; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca →</a></div>`;
+            });
 
-        async function loadProfile() {
-            try {
-                const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
-                const text = await res.text();
-                document.getElementById('profile-content').innerHTML = marked.parse(text);
-            } catch (e) { 
-                document.getElementById('profile-content').innerHTML = "Gagal memuat profil.";
-            }
+            const n = await fetch(CONFIG.sheetUrl);
+            const nRows = (await n.text()).split('\n').slice(1, 7);
+            const nList = document.getElementById('portfolio-list');
+            nRows.forEach(r => {
+                const c = r.split('","').map(x => x.replace(/"/g, ''));
+                if(c[0]) nList.innerHTML += `<div class="card"><strong>${c[0]}</strong><p style="font-size:0.9rem; margin:5px 0">${c[1]}</p></div>`;
+            });
         }
-
-        async function loadBlog() {
-            const list = document.getElementById('blog-list');
-            try {
-                const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
-                const files = await res.json();
-                
-                // Filter file .md dan ambil 3 terbaru saja
-                const mdFiles = files.filter(f => f.name.endsWith('.md')).reverse();
-                const limitedFiles = mdFiles.slice(0, 3);
-                
-                list.innerHTML = '';
-                if(limitedFiles.length === 0) {
-                    list.innerHTML = "<p>Belum ada tulisan.</p>";
-                    return;
-                }
-
-                limitedFiles.forEach(file => {
-                    // Logika pengambilan kategori dari nama file
-                    const parts = file.name.split('-');
-                    const kategori = parts[3] || 'umum';
-                    const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kategori.length + 1);
-                    
-                    list.innerHTML += `
-                        <div class="card">
-                            <small style="text-transform:uppercase; color:gray; font-size:0.7rem;">${kategori}</small>
-                            <h3 style="margin:5px 0 10px 0">${judul}</h3>
-                            <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;font-size:0.85rem;">Baca Tulisan →</a>
-                        </div>`;
-                });
-            } catch (e) { 
-                list.innerHTML = "<p>Belum ada tulisan blog.</p>"; 
-            }
-        }
-
-        async function loadNow() {
-            const list = document.getElementById('portfolio-list');
-            try {
-                const res = await fetch(CONFIG.sheetUrl);
-                const data = await res.text();
-                const rows = data.split('\n').slice(1); 
-                
-                // Ambil maksimal 6 baris teratas
-                const limitedRows = rows.slice(0, 6);
-                
-                list.innerHTML = '';
-                limitedRows.forEach(row => {
-                    const col = row.split('","').map(c => c.replace(/"/g, ''));
-                    if(col.length >= 2) {
-                        list.innerHTML += `
-                            <div class="card">
-                                <h3 style="margin-bottom:5px">${col[0]}</h3>
-                                <p style="font-size:0.9rem; color:#444">${col[1]}</p>
-                                <small style="color:gray">Update: ${col[2] || '-'}</small>
-                            </div>`;
-                    }
-                });
-            } catch (e) { 
-                list.innerHTML = "<p>Gagal memuat data /now.</p>"; 
-            }
-        }
-
-        loadProfile();
-        loadBlog();
-        loadNow();
+        load();
     </script>
 </body>
 </html>
