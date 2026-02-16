@@ -3,73 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Membaca Tulisan - Romli</title>
+    <title>Membaca - Romli Nur Hidayat</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        /* CSS Tambahan agar konten blog rapi */
-        #post-content img { max-width: 100%; height: auto; border-radius: 8px; }
-        #post-content { line-height: 1.8; color: #333; }
-        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: gray; font-size: 0.9rem; }
-        
-        /* Memastikan footer tetap di bawah jika artikel pendek */
-        body { display: flex; flex-direction: column; min-height: 100vh; }
-        .container { flex: 1; padding-bottom: 50px; }
-        
-        .post-header { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .post-date { color: gray; font-size: 0.85rem; }
-    </style>
 </head>
 <body>
+    <header>
+        <a href="journal.html" style="text-decoration:none; color:black; font-size:0.8rem; position:absolute; left:15px; top:18px;">← Kembali</a>
+        <h1>Journal</h1>
+    </header>
 
     <div class="container">
-        <header>
-            <a href="journal.html" class="back-link">← Kembali ke Journal</a>
-        </header>
-
-        <article class="card">
-            <div id="post-content">Memuat tulisan...</div>
-        </article>
+        <article id="post-content">Memuat tulisan...</article>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Romli Site • Managed via Mobile</p>
-    </footer>
+    <footer>&copy; 2026 Romli Nur Hidayat</footer>
+
+    <a href="https://wa.me/6282137652772?text=Halo%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </a>
 
     <script>
-        const CONFIG = {
-            user: "romli",
-            repo: "romli-site"
-        };
-
         async function loadPost() {
-            const params = new URLSearchParams(window.location.search);
-            const fileName = params.get('file');
-            const contentDiv = document.getElementById('post-content');
-
-            if (!fileName) {
-                contentDiv.innerHTML = "<p>File tidak ditemukan.</p>";
-                return;
-            }
-
+            const fileName = new URLSearchParams(window.location.search).get('file');
+            if (!fileName) return;
             try {
-                const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/blog/${fileName}`);
-                if (!res.ok) throw new Error();
+                const res = await fetch(`https://raw.githubusercontent.com/romli/romli-site/main/blog/${fileName}`);
                 const markdown = await res.text();
-                
-                // Render Markdown ke HTML
-                contentDiv.innerHTML = marked.parse(markdown);
-                
-                // Update Title Browser sesuai judul file (opsional)
-                const judulBersih = fileName.replace(/-/g, ' ').replace('.md', '').substring(11);
-                document.title = judulBersih.toUpperCase() + " - Romli";
-                
+                document.getElementById('post-content').innerHTML = marked.parse(markdown);
             } catch (e) {
-                contentDiv.innerHTML = "<p>Gagal memuat isi tulisan. Pastikan file ada di folder blog.</p>";
+                document.getElementById('post-content').innerHTML = "Gagal memuat tulisan.";
             }
         }
-
         loadPost();
     </script>
 </body>
