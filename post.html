@@ -3,56 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading Journal - Romli</title>
+    <title>Blog - Romli Site</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        .back-link { display: block; margin-bottom: 30px; text-decoration: none; color: #636e72; font-weight: 600; }
-        .post-content { background: white; padding: 40px; border-radius: 15px; box-shadow: var(--shadow); }
-        .post-content img { max-width: 100%; border-radius: 8px; }
-        /* Styling khusus teks markdown agar tetap elegan */
-        .post-content h1, .post-content h2 { font-family: 'Playfair Display', serif; }
-        .post-content p { font-size: 1.1rem; color: #333; line-height: 1.8; }
-    </style>
 </head>
 <body>
-
     <div class="container">
-        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+        <header>
+            <a href="index.html" style="text-decoration:none; color:black;">← Kembali</a>
+        </header>
         
-        <article id="post-container" class="post-content">
-            <p>Sedang memuat tulisan...</p>
+        <article class="card" style="margin-top:20px;">
+            <div id="post-content">Memuat postingan...</div>
         </article>
     </div>
 
     <script>
-        const user = "romli-s";
-        const repo = "romli-site";
-
-        // Ambil nama file dari URL (misal: post.html?file=2026-02-16-hello-world.md)
-        const urlParams = new URLSearchParams(window.location.search);
-        const fileName = urlParams.get('file');
+        const CONFIG = {
+            user: "romli", // Pastikan ini sudah 'romli' sesuai akun GitHub Bapak
+            repo: "romli-site"
+        };
 
         async function loadPost() {
+            const params = new URLSearchParams(window.location.search);
+            const fileName = params.get('file');
+            const contentDiv = document.getElementById('post-content');
+
             if (!fileName) {
-                document.getElementById('post-container').innerHTML = "<h1>Postingan tidak ditemukan.</h1>";
+                contentDiv.innerHTML = "Postingan tidak ditemukan.";
                 return;
             }
 
             try {
-                const res = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/blog/${fileName}`);
-                if (!res.ok) throw new Error("File tidak ditemukan");
+                // Mengambil isi file markdown dari folder blog
+                const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/blog/${fileName}`);
                 
-                const md = await res.text();
-                document.getElementById('post-container').innerHTML = marked.parse(md);
+                if (res.status === 404) {
+                    contentDiv.innerHTML = "File postingan tidak ditemukan di folder blog.";
+                    return;
+                }
+
+                const text = await res.text();
+                // Mengubah Markdown menjadi HTML
+                contentDiv.innerHTML = marked.parse(text);
                 
-                // Update judul tab browser sesuai judul tulisan
-                const titleMatch = md.match(/^#\s+(.*)/m);
-                if (titleMatch) document.title = titleMatch[1] + " - Romli";
+                // Mengganti title halaman sesuai nama file (opsional)
+                document.title = fileName.replace(/-/g, ' ').replace('.md', '').substring(11) + " - Romli Site";
                 
             } catch (e) {
-                document.getElementById('post-container').innerHTML = "<h1>Gagal memuat postingan.</h1>";
+                contentDiv.innerHTML = "Gagal memuat postingan. Periksa koneksi atau nama file.";
             }
         }
 
