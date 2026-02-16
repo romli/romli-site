@@ -10,61 +10,58 @@
 </head>
 <body>
     <header>
-        <img src="profile.jpg" alt="Romli" onerror="this.src='https://via.placeholder.com/40'">
+        <img src="profile.jpg" alt="Romli" onerror="this.src='https://via.placeholder.com/45'">
         <h1>Romli Nur Hidayat</h1>
     </header>
 
     <div class="container">
-        <section>
+        <section id="about">
             <h2>Tentang</h2>
-            <div id="profile-content" class="card">Memuat...</div>
+            <div id="profile-content">Memuat profil...</div>
         </section>
 
-        <section>
-            <h2>/now</h2>
+        <section id="now">
+            <h2>Aktivitas Saat Ini</h2>
             <div id="portfolio-list" class="grid"></div>
         </section>
 
-        <section>
-            <h2>Journal Terbaru</h2>
+        <section id="journal">
+            <h2>Tulisan Terbaru</h2>
             <div id="blog-list" class="grid"></div>
-            <div style="text-align:center; margin-top:20px;">
-                <a href="journal.html" style="text-decoration:none; color:#333; font-weight:600; border:1px solid #ddd; padding:8px 16px; border-radius:8px; font-size:0.9rem;">Lihat Semua Journal →</a>
-            </div>
+            <div style="text-align:center;"><a href="journal.html" class="btn-journal">Lihat Semua Tulisan →</a></div>
         </section>
     </div>
 
     <footer>&copy; 2026 Romli Nur Hidayat</footer>
 
-    <a href="https://wa.me/6282137652772?text=Halo%20Pak%20Romli%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
+    <a href="https://wa.me/6282137652772?text=Halo%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
 
     <script>
         const CONFIG = { user: "romli", repo: "romli-site", sheetUrl: "https://docs.google.com/spreadsheets/d/1E2sWBE7Vh38L-Y4c2Q0UJTMExFpu2CKkWht21LcRKdk/gviz/tq?tqx=out:csv" };
-        async function load() {
-            const p = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
-            document.getElementById('profile-content').innerHTML = marked.parse(await p.text());
+        async function loadContent() {
+            const pRes = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
+            document.getElementById('profile-content').innerHTML = marked.parse(await pRes.text());
             
-            const b = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
-            const files = await b.json();
-            const latest = files.filter(f => f.name.endsWith('.md')).reverse().slice(0,3);
+            const bRes = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
+            const files = (await bRes.json()).filter(f => f.name.endsWith('.md')).reverse().slice(0,3);
             const bList = document.getElementById('blog-list');
-            latest.forEach(f => {
+            files.forEach(f => {
                 const k = f.name.split('-')[3] || 'umum';
                 const j = f.name.replace(/-/g, ' ').replace('.md', '').substring(11 + k.length + 1);
-                bList.innerHTML += `<div class="card"><div class="category-tag">${k.replace('.',' ')}</div><h3 style="margin:10px 0">${j}</h3><a href="post.html?file=${f.name}" style="color:black; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca →</a></div>`;
+                bList.innerHTML += `<div class="card"><small class="category-tag">${k.replace('.',' ')}</small><h3>${j}</h3><a href="post.html?file=${f.name}" style="text-decoration:none; color:black; font-size:0.85rem; font-weight:600;">Baca →</a></div>`;
             });
 
-            const n = await fetch(CONFIG.sheetUrl);
-            const nRows = (await n.text()).split('\n').slice(1, 7);
+            const nRes = await fetch(CONFIG.sheetUrl);
+            const rows = (await nRes.text()).split('\n').slice(1, 7);
             const nList = document.getElementById('portfolio-list');
-            nRows.forEach(r => {
+            rows.forEach(r => {
                 const c = r.split('","').map(x => x.replace(/"/g, ''));
-                if(c[0]) nList.innerHTML += `<div class="card"><strong>${c[0]}</strong><p style="font-size:0.9rem; margin:5px 0">${c[1]}</p></div>`;
+                if(c[0]) nList.innerHTML += `<div class="card"><h3>${c[0]}</h3><p>${c[1]}</p></div>`;
             });
         }
-        load();
+        loadContent();
     </script>
 </body>
 </html>
