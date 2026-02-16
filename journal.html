@@ -16,11 +16,11 @@
         .pagination { margin: 40px 0; display: flex; justify-content: center; gap: 20px; align-items: center; }
         .page-btn { padding: 10px 20px; border: 1px solid #eee; background: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; }
         .page-btn:disabled { color: #ccc; cursor: not-allowed; }
+        .category-tags-container { margin-bottom: 8px; }
         .category-tag { 
             display: inline-block; background: #f0f0f0; padding: 2px 8px; 
-            border-radius: 4px; font-size: 0.75rem; color: #666; margin-bottom: 5px; text-transform: uppercase;
+            border-radius: 4px; font-size: 0.7rem; color: #666; margin-right: 5px; text-transform: uppercase; font-weight: 600;
         }
-        /* Style tambahan agar footer tetap di bawah */
         body { display: flex; flex-direction: column; min-height: 100vh; }
         .container { flex: 1; }
     </style>
@@ -57,14 +57,11 @@
         let allFiles = [];
         let filteredFiles = [];
         let currentPage = 1;
-        let currentCategory = 'all';
 
         async function initJournal() {
             try {
                 const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
                 const files = await res.json();
-                
-                // Ambil file .md, urutkan terbaru
                 allFiles = files.filter(f => f.name.endsWith('.md')).reverse();
                 
                 buildFilters();
@@ -78,7 +75,11 @@
             const categories = new Set();
             allFiles.forEach(f => {
                 const parts = f.name.split('-');
-                if(parts.length > 3) categories.add(parts[3]);
+                if(parts.length > 3) {
+                    // Pecah kategori jika ada titik (misal: umkm.opini)
+                    const subCats = parts[3].split('.');
+                    subCats.forEach(sc => categories.add(sc));
+                }
             });
 
             const filterBar = document.getElementById('filter-bar');
@@ -93,9 +94,7 @@
         }
 
         function filterBy(cat) {
-            currentCategory = cat;
             currentPage = 1;
-            
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.toggle('active', 
                     (cat === 'all' && btn.innerText === 'Semua') || 
@@ -106,7 +105,10 @@
             if (cat === 'all') {
                 filteredFiles = allFiles;
             } else {
-                filteredFiles = allFiles.filter(f => f.name.split('-')[3] === cat);
+                filteredFiles = allFiles.filter(f => {
+                    const parts = f.name.split('-');
+                    return parts.length > 3 && parts[3].split('.').includes(cat);
+                });
             }
             renderPage();
         }
@@ -118,7 +120,6 @@
             const pageFiles = filteredFiles.slice(start, end);
 
             list.innerHTML = '';
-            
             if(pageFiles.length === 0) {
                 list.innerHTML = "<p>Tidak ada tulisan di kategori ini.</p>";
             }
@@ -126,13 +127,20 @@
             pageFiles.forEach(file => {
                 const parts = file.name.split('-');
                 const tanggal = parts.slice(0,3).join('-');
-                const kategori = parts[3] || 'umum';
-                // Judul diambil setelah tanggal dan kategori
-                const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kategori.length + 1);
+                const kategoriRaw = parts[3] || 'umum';
+                const subCats = kategoriRaw.split('.');
+                const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kategoriRaw.length + 1);
+
+                // Buat tag kategori (bisa lebih dari satu)
+                let tagsHtml = '<div class="category-tags-container">';
+                subCats.forEach(sc => {
+                    tagsHtml += `<span class="category-tag">${sc}</span>`;
+                });
+                tagsHtml += '</div>';
 
                 list.innerHTML += `
                     <div class="card">
-                        <span class="category-tag">${kategori}</span>
+                        ${tagsHtml}
                         <h3 style="margin:5px 0 10px 0">${judul}</h3>
                         <small style="color:gray">${tanggal}</small><br><br>
                         <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;font-size:0.85rem;">Baca Selengkapnya →</a>
