@@ -13,19 +13,22 @@
             background: white; cursor: pointer; font-size: 0.85rem; transition: 0.3s;
         }
         .filter-btn.active { background: #000; color: #fff; border-color: #000; }
-        .pagination { margin-top: 30px; display: flex; justify-content: center; gap: 20px; align-items: center; }
-        .page-btn { padding: 10px 20px; border: 1px solid #eee; background: #fff; cursor: pointer; border-radius: 5px; }
+        .pagination { margin: 40px 0; display: flex; justify-content: center; gap: 20px; align-items: center; }
+        .page-btn { padding: 10px 20px; border: 1px solid #eee; background: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; }
         .page-btn:disabled { color: #ccc; cursor: not-allowed; }
         .category-tag { 
             display: inline-block; background: #f0f0f0; padding: 2px 8px; 
             border-radius: 4px; font-size: 0.75rem; color: #666; margin-bottom: 5px; text-transform: uppercase;
         }
+        /* Style tambahan agar footer tetap di bawah */
+        body { display: flex; flex-direction: column; min-height: 100vh; }
+        .container { flex: 1; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <a href="index.html" style="text-decoration:none; color:gray;">← Kembali ke Beranda</a>
+            <a href="index.html" style="text-decoration:none; color:gray; font-size: 0.9rem;">← Kembali ke Beranda</a>
             <h1 style="margin-top:20px;">Journal</h1>
             <p class="subtitle">Catatan, Opini, dan Strategi UMKM</p>
         </header>
@@ -45,6 +48,10 @@
         </div>
     </div>
 
+    <footer>
+        <p>&copy; 2026 Romli Site • Managed via Mobile</p>
+    </footer>
+
     <script>
         const CONFIG = { user: "romli", repo: "romli-site", perPage: 5 };
         let allFiles = [];
@@ -60,10 +67,7 @@
                 // Ambil file .md, urutkan terbaru
                 allFiles = files.filter(f => f.name.endsWith('.md')).reverse();
                 
-                // Build Filter Buttons secara otomatis
                 buildFilters();
-                
-                // Jalankan filter pertama kali
                 filterBy('all');
             } catch (e) {
                 document.getElementById('journal-list').innerHTML = "<p>Gagal memuat tulisan.</p>";
@@ -92,9 +96,11 @@
             currentCategory = cat;
             currentPage = 1;
             
-            // Update tampilan tombol aktif
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.toggle('active', (cat === 'all' && btn.innerText === 'Semua') || btn.getAttribute('data-cat') === cat);
+                btn.classList.toggle('active', 
+                    (cat === 'all' && btn.innerText === 'Semua') || 
+                    btn.getAttribute('data-cat') === cat
+                );
             });
 
             if (cat === 'all') {
@@ -121,6 +127,7 @@
                 const parts = file.name.split('-');
                 const tanggal = parts.slice(0,3).join('-');
                 const kategori = parts[3] || 'umum';
+                // Judul diambil setelah tanggal dan kategori
                 const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kategori.length + 1);
 
                 list.innerHTML += `
@@ -128,11 +135,10 @@
                         <span class="category-tag">${kategori}</span>
                         <h3 style="margin:5px 0 10px 0">${judul}</h3>
                         <small style="color:gray">${tanggal}</small><br><br>
-                        <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;">Baca Selengkapnya →</a>
+                        <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;font-size:0.85rem;">Baca Selengkapnya →</a>
                     </div>`;
             });
 
-            // Update Pagination Info
             document.getElementById('pageInfo').innerText = `Halaman ${currentPage}`;
             document.getElementById('prevBtn').disabled = (currentPage === 1);
             document.getElementById('nextBtn').disabled = (end >= filteredFiles.length);
@@ -141,7 +147,7 @@
         function changePage(step) {
             currentPage += step;
             renderPage();
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         initJournal();
