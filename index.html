@@ -5,20 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Romli - Personal Site</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1 id="site-title">Romli</h1>
+            <h1>Romli</h1>
             <p class="subtitle">Digital Enthusiast & Strategist</p>
         </header>
 
         <section id="about">
             <h2>Tentang</h2>
             <div id="profile-content" class="card">Memuat profil...</div>
+        </section>
+
+        <section id="now">
+            <h2>/now</h2>
+            <div id="portfolio-list" class="grid">
+                <p>Memuat status terbaru...</p>
+            </div>
         </section>
 
         <section id="journal">
@@ -34,46 +41,73 @@
     </footer>
 
     <script>
-        // PENTING: Ganti dengan username GitHub Anda
-        const user = "romli-s"; // Sesuai dengan screenshot Anda
-        const repo = "romli-site";
+        const CONFIG = {
+            user: "romli-s",
+            repo: "romli-site",
+            // Menggunakan link Google Sheets Bapak yang sudah dimodifikasi agar bisa dibaca kode
+            sheetUrl: "https://docs.google.com/spreadsheets/d/1E2sWBE7Vh38L-Y4c2Q0UJTMExFpu2CKkWht21LcRKdk/gviz/tq?tqx=out:csv"
+        };
 
-        // 1. Fungsi Ambil Profil
-        async function getProfile() {
+        // 1. FUNGSI LOAD PROFIL
+        async function loadProfile() {
             try {
-                const res = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/profile.md`);
-                const md = await res.text();
-                document.getElementById('profile-content').innerHTML = marked.parse(md);
+                const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
+                const text = await res.text();
+                document.getElementById('profile-content').innerHTML = marked.parse(text);
             } catch (e) { console.error("Gagal muat profil"); }
         }
 
-        // 2. Fungsi Ambil Daftar Blog
-        async function getBlog() {
+        // 2. FUNGSI LOAD BLOG
+        async function loadBlog() {
+            const list = document.getElementById('blog-list');
             try {
-                const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/blog`);
+                const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
                 const files = await res.json();
-                const list = document.getElementById('blog-list');
                 list.innerHTML = '';
-
-                // Sortir file terbaru di atas
-                files.reverse().forEach(file => {
-                    if(file.name.endsWith('.md')) {
-                        const judul = file.name.replace(/-/g, ' ').replace('.md', '');
-                        const card = `
-                            <div class="card">
-                                <span class="tag">Post</span>
-                                <h3>${judul}</h3>
-                                <a href="https://github.com/${user}/${repo}/blob/main/blog/${file.name}" target="_blank" style="text-decoration:none; color:#2d3436; font-weight:600;">Baca di GitHub →</a>
-                            </div>
-                        `;
-                        list.innerHTML += card;
-                    }
+                files.reverse().filter(f => f.name.endsWith('.md')).forEach(file => {
+                    const judul = file.name.replace(/-/g, ' ').replace('.md', '').substring(11);
+                    list.innerHTML += `
+                        <div class="card">
+                            <span style="font-size:0.8rem;color:gray">${file.name.substring(0,10)}</span>
+                            <h3 style="margin:10px 0">${judul}</h3>
+                            <a href="post.html?file=${file.name}" style="text-decoration:none;color:black;font-weight:600;">Baca Tulisan →</a>
+                        </div>`;
                 });
-            } catch (e) { console.error("Gagal muat blog"); }
+            } catch (e) { list.innerHTML = "<p>Belum ada tulisan blog.</p>"; }
         }
 
-        getProfile();
-        getBlog();
+        // 3. FUNGSI LOAD /NOW (Google Sheets)
+        async function loadNow() {
+            const list = document.getElementById('portfolio-list');
+            try {
+                const res = await fetch(CONFIG.sheetUrl);
+                const data = await res.text();
+                
+                // Membersihkan tanda kutip dari CSV Google
+                const rows = data.split('\n').slice(1); 
+                list.innerHTML = '';
+                
+                rows.forEach(row => {
+                    // Membersihkan karakter kutip yang sering muncul di CSV Google
+                    const col = row.split('","').map(c => c.replace(/"/g, ''));
+                    if(col.length >= 2) {
+                        list.innerHTML += `
+                            <div class="card">
+                                <h3 style="margin-bottom:5px">${col[0]}</h3>
+                                <p style="font-size:0.9rem; color:#444">${col[1]}</p>
+                                <small style="color:gray">Update: ${col[2] || '-'}</small>
+                            </div>`;
+                    }
+                });
+            } catch (e) { 
+                list.innerHTML = "<p>Gagal memuat data /now. Pastikan akses Google Sheets sudah 'Anyone with the link'.</p>"; 
+            }
+        }
+
+        // Jalankan semua
+        loadProfile();
+        loadBlog();
+        loadNow();
     </script>
 </body>
 </html>
