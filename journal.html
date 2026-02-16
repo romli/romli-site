@@ -17,52 +17,43 @@
         <div id="filter-bar" class="filter-container">
             <button class="filter-btn active" onclick="filterBy('all')">Semua</button>
         </div>
-
         <div id="journal-list" class="grid">Memuat tulisan...</div>
-
         <div class="pagination">
             <button id="prevBtn" class="page-btn" onclick="changePage(-1)">←</button>
-            <span id="pageInfo" style="font-size:0.85rem">Halaman 1</span>
+            <span id="pageInfo" style="font-size:0.8rem; color:#999">Halaman 1</span>
             <button id="nextBtn" class="page-btn" onclick="changePage(1)">→</button>
         </div>
     </div>
 
     <footer>&copy; 2026 Romli Nur Hidayat</footer>
 
-    <a href="https://wa.me/6282137652772?text=Halo%20Pak%20Romli%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
+    <a href="https://wa.me/6282137652772?text=Halo%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
 
     <script>
         const CONFIG = { user: "romli", repo: "romli-site", perPage: 5 };
         let all = [], filtered = [], currentPage = 1;
-
         async function init() {
             const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
-            const files = await res.json();
-            all = files.filter(f => f.name.endsWith('.md')).reverse();
-            
+            all = (await res.json()).filter(f => f.name.endsWith('.md')).reverse();
             const cats = new Set();
             all.forEach(f => f.name.split('-')[3]?.split('.').forEach(c => cats.add(c)));
             const fb = document.getElementById('filter-bar');
             cats.forEach(c => {
                 const btn = document.createElement('button');
-                btn.className = 'filter-btn';
-                btn.innerText = c.toUpperCase();
+                btn.className = 'filter-btn'; btn.innerText = c.toUpperCase();
                 btn.onclick = () => filterBy(c);
-                btn.setAttribute('data-cat', c);
                 fb.appendChild(btn);
             });
             filterBy('all');
         }
-
         function filterBy(c) {
             currentPage = 1;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase() === c || (c==='all' && b.innerText==='Semua')));
             filtered = c === 'all' ? all : all.filter(f => f.name.split('-')[3]?.split('.').includes(c));
             render();
         }
-
         function render() {
             const list = document.getElementById('journal-list');
             const start = (currentPage - 1) * CONFIG.perPage;
@@ -73,13 +64,12 @@
                 const kRaw = parts[3] || 'umum';
                 const j = f.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kRaw.length + 1);
                 let tags = kRaw.split('.').map(t => `<span class="category-tag">${t}</span>`).join('');
-                list.innerHTML += `<div class="card">${tags}<h3 style="margin:10px 0">${j}</h3><small style="color:gray">${parts.slice(0,3).join('-')}</small><br><br><a href="post.html?file=${f.name}" style="color:black; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca Selengkapnya →</a></div>`;
+                list.innerHTML += `<div class="card">${tags}<h3 style="margin:10px 0">${j}</h3><a href="post.html?file=${f.name}" style="color:black; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca Selengkapnya →</a></div>`;
             });
             document.getElementById('pageInfo').innerText = `Halaman ${currentPage}`;
             document.getElementById('prevBtn').disabled = currentPage === 1;
             document.getElementById('nextBtn').disabled = start + CONFIG.perPage >= filtered.length;
         }
-
         function changePage(s) { currentPage += s; render(); window.scrollTo(0,0); }
         init();
     </script>
