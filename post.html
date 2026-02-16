@@ -3,24 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Romli Site</title>
+    <title>Membaca Tulisan - Romli</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* CSS Tambahan agar konten blog rapi */
+        #post-content img { max-width: 100%; height: auto; border-radius: 8px; }
+        #post-content { line-height: 1.8; color: #333; }
+        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: gray; font-size: 0.9rem; }
+        
+        /* Memastikan footer tetap di bawah jika artikel pendek */
+        body { display: flex; flex-direction: column; min-height: 100vh; }
+        .container { flex: 1; padding-bottom: 50px; }
+        
+        .post-header { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .post-date { color: gray; font-size: 0.85rem; }
+    </style>
 </head>
 <body>
+
     <div class="container">
         <header>
-            <a href="index.html" style="text-decoration:none; color:black;">← Kembali</a>
+            <a href="journal.html" class="back-link">← Kembali ke Journal</a>
         </header>
-        
-        <article class="card" style="margin-top:20px;">
-            <div id="post-content">Memuat postingan...</div>
+
+        <article class="card">
+            <div id="post-content">Memuat tulisan...</div>
         </article>
     </div>
 
+    <footer>
+        <p>&copy; 2026 Romli Site • Managed via Mobile</p>
+    </footer>
+
     <script>
         const CONFIG = {
-            user: "romli", // Pastikan ini sudah 'romli' sesuai akun GitHub Bapak
+            user: "romli",
             repo: "romli-site"
         };
 
@@ -30,28 +49,24 @@
             const contentDiv = document.getElementById('post-content');
 
             if (!fileName) {
-                contentDiv.innerHTML = "Postingan tidak ditemukan.";
+                contentDiv.innerHTML = "<p>File tidak ditemukan.</p>";
                 return;
             }
 
             try {
-                // Mengambil isi file markdown dari folder blog
                 const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/blog/${fileName}`);
+                if (!res.ok) throw new Error();
+                const markdown = await res.text();
                 
-                if (res.status === 404) {
-                    contentDiv.innerHTML = "File postingan tidak ditemukan di folder blog.";
-                    return;
-                }
-
-                const text = await res.text();
-                // Mengubah Markdown menjadi HTML
-                contentDiv.innerHTML = marked.parse(text);
+                // Render Markdown ke HTML
+                contentDiv.innerHTML = marked.parse(markdown);
                 
-                // Mengganti title halaman sesuai nama file (opsional)
-                document.title = fileName.replace(/-/g, ' ').replace('.md', '').substring(11) + " - Romli Site";
+                // Update Title Browser sesuai judul file (opsional)
+                const judulBersih = fileName.replace(/-/g, ' ').replace('.md', '').substring(11);
+                document.title = judulBersih.toUpperCase() + " - Romli";
                 
             } catch (e) {
-                contentDiv.innerHTML = "Gagal memuat postingan. Periksa koneksi atau nama file.";
+                contentDiv.innerHTML = "<p>Gagal memuat isi tulisan. Pastikan file ada di folder blog.</p>";
             }
         }
 
