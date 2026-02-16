@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Journal - Romli</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .back-link { display: block; margin-bottom: 30px; text-decoration: none; color: #636e72; font-weight: 600; }
+        .post-content { background: white; padding: 40px; border-radius: 15px; box-shadow: var(--shadow); }
+        .post-content img { max-width: 100%; border-radius: 8px; }
+        /* Styling khusus teks markdown agar tetap elegan */
+        .post-content h1, .post-content h2 { font-family: 'Playfair Display', serif; }
+        .post-content p { font-size: 1.1rem; color: #333; line-height: 1.8; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+        
+        <article id="post-container" class="post-content">
+            <p>Sedang memuat tulisan...</p>
+        </article>
+    </div>
+
+    <script>
+        const user = "romli-s";
+        const repo = "romli-site";
+
+        // Ambil nama file dari URL (misal: post.html?file=2026-02-16-hello-world.md)
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileName = urlParams.get('file');
+
+        async function loadPost() {
+            if (!fileName) {
+                document.getElementById('post-container').innerHTML = "<h1>Postingan tidak ditemukan.</h1>";
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/blog/${fileName}`);
+                if (!res.ok) throw new Error("File tidak ditemukan");
+                
+                const md = await res.text();
+                document.getElementById('post-container').innerHTML = marked.parse(md);
+                
+                // Update judul tab browser sesuai judul tulisan
+                const titleMatch = md.match(/^#\s+(.*)/m);
+                if (titleMatch) document.title = titleMatch[1] + " - Romli";
+                
+            } catch (e) {
+                document.getElementById('post-container').innerHTML = "<h1>Gagal memuat postingan.</h1>";
+            }
+        }
+
+        loadPost();
+    </script>
+</body>
+</html>
