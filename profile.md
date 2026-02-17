@@ -1,19 +1,19 @@
-### Romli Nur Hidayat
-**Konsultan UMKM & Digital Enthusiast**
+Saya Romli — konsultan UMKM yang sudah lebih dari **5 tahun** bergelut langsung di lapangan bersama pelaku usaha dan koperasi di Daerah Istimewa Yogyakarta.
 
-Saya fokus pada penguatan ekosistem umkm melalui manajemen strategis dan adaptasi teknologi. Sebagai seorang *Digital Enthusiast*, saya senang mengeksplorasi cara baru untuk menyederhanakan tata kelola usaha.
+Yang saya lakukan sehari-hari bukan sekadar memberi saran. Saya duduk bareng, mendengarkan kondisi nyata usaha seseorang, dan dari sana kita cari tahu bersama apa yang benar-benar perlu dilakukan — bukan solusi yang terdengar bagus di atas kertas.
 
----
-
-**Kompetensi (Sertifikasi BNSP):**
-* Instruktur Penyelia
-* Pendamping UMKM
-* Konsultan Perkoperasian
-* Digital Marketing
+Saya percaya bahwa **kepercayaan adalah fondasi** dari setiap pendampingan yang berhasil. Itulah mengapa banyak yang kembali lagi, atau memperkenalkan saya ke rekan mereka bukan karena saya yang paling hebat, tapi karena mereka merasa aman untuk jujur tentang kondisi usaha mereka.
 
 ---
 
-**Kontak & Diskusi:**
-* **Email:** romli.nurhidayat[at]gmail.com
+**Sertifikasi BNSP:**
+- Pendamping UMKM
+- Konsultan Perkoperasian
+- Instruktur Penyelia
 
-*Gunakan tombol WhatsApp di pojok bawah untuk respon lebih cepat.*
+---
+
+**Kontak:**
+Email: romli.nurhidayat[at]gmail.com
+
+*Untuk diskusi yang lebih cepat, gunakan tombol WhatsApp di halaman ini.*

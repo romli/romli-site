@@ -3,65 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Romli Nur Hidayat</title>
+
+    <title>Romli Nur Hidayat — Konsultan UMKM & Pengembangan Usaha, Yogyakarta</title>
+    <meta name="description" content="Romli Nur Hidayat, Konsultan UMKM bersertifikasi BNSP di Yogyakarta. Lebih dari 5 tahun mendampingi pelaku usaha dan koperasi tumbuh lebih kuat. Mari ngobrol.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://romli.pages.dev/">
+    <meta property="og:title" content="Romli Nur Hidayat — Konsultan UMKM, Yogyakarta">
+    <meta property="og:description" content="Lebih dari 5 tahun mendampingi UMKM dan koperasi di DIY. Bukan dengan teori, tapi dengan ngobrol dulu.">
+    <meta property="og:image" content="https://romli.pages.dev/profile.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Romli Nur Hidayat — Konsultan UMKM">
+    <meta name="twitter:description" content="Konsultan UMKM bersertifikasi BNSP di Yogyakarta. Mari ngobrol.">
+
+    <link rel="icon" href="profile.jpg" type="image/jpeg">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+
+    <!-- HEADER -->
     <header>
-        <img src="profile.jpg" alt="Romli" onerror="this.src='https://via.placeholder.com/45'">
-        <h1>Romli Nur Hidayat</h1>
+        <div class="header-inner">
+            <div class="header-brand">
+                <img src="profile.jpg" alt="Romli" onerror="this.src='https://via.placeholder.com/36'">
+                <span>Romli Nur Hidayat</span>
+            </div>
+            <nav class="header-nav">
+                <a href="#layanan">Layanan</a>
+                <a href="#proyek">Proyek</a>
+                <a href="journal.html">Tulisan</a>
+            </nav>
+        </div>
     </header>
 
+    <!-- HERO -->
     <div class="container">
+        <section class="hero animate-in">
+            <div class="hero-content">
+                <div class="hero-top">
+                    <img src="profile.jpg" alt="Romli Nur Hidayat" class="hero-avatar" onerror="this.src='https://via.placeholder.com/72'">
+                    <div class="hero-identity">
+                        <h1 class="hero-name">Romli Nur Hidayat</h1>
+                        <p class="hero-role">Konsultan UMKM & Pengembangan Usaha · Yogyakarta</p>
+                    </div>
+                </div>
+
+                <p class="hero-tagline">
+                    "Bukan seberapa canggih strateginya, tapi seberapa yakin pemilik usahanya."
+                </p>
+
+                <p class="hero-desc">
+                    Lebih dari 5 tahun saya mendampingi pelaku UMKM, koperasi, dan pengurus usaha di Daerah Istimewa Yogyakarta. Yang sering membuat perubahan bukan solusi rumit — melainkan percakapan yang jujur tentang kondisi nyata usaha Anda.
+                </p>
+
+                <div class="hero-cta">
+                    <a href="https://wa.me/6282137652772?text=Halo%20Romli%2C%20saya%20baru%20baca%20romli.pages.dev%20dan%20ingin%20ngobrol%20tentang%20usaha%20saya." class="btn-wa" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Ngobrol Sekarang
+                    </a>
+                    <a href="#layanan" class="btn-secondary">Lihat layanan →</a>
+                </div>
+
+                <div class="trust-bar">
+                    <span class="trust-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        BNSP: Pendamping UMKM
+                    </span>
+                    <span class="trust-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        BNSP: Konsultan Koperasi
+                    </span>
+                    <span class="trust-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        BNSP: Instruktur Penyelia
+                    </span>
+                    <span class="trust-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        5+ Tahun Pengalaman
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYANAN -->
+        <section id="layanan">
+            <div class="section-label">Layanan</div>
+            <div class="layanan-grid">
+                <div class="layanan-card animate-in">
+                    <div class="layanan-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <h3>Pendampingan UMKM</h3>
+                    <p>Mendampingi pelaku usaha dalam memetakan masalah, menyusun strategi, dan mengambil langkah yang tepat untuk usaha mereka.</p>
+                </div>
+                <div class="layanan-card animate-in">
+                    <div class="layanan-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    </div>
+                    <h3>Pelatihan & Instruktur</h3>
+                    <p>Memfasilitasi pelatihan untuk pelaku usaha, aparatur, maupun komunitas dengan pendekatan yang praktis dan mudah dicerna.</p>
+                </div>
+                <div class="layanan-card animate-in">
+                    <div class="layanan-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
+                    <h3>Konsultansi Koperasi</h3>
+                    <p>Membantu koperasi dalam penguatan tata kelola, pengembangan usaha, dan peningkatan kapasitas pengurus.</p>
+                </div>
+                <div class="layanan-card animate-in">
+                    <div class="layanan-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </div>
+                    <h3>Transformasi Digital</h3>
+                    <p>Membantu usaha dan lembaga mengadopsi teknologi secara tepat guna — bukan sekadar ikut tren, tapi yang benar-benar membantu operasional.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROYEK / AKTIVITAS -->
+        <section id="proyek">
+            <div class="section-label">Proyek & Aktivitas</div>
+            <div id="proyek-list">
+                <div class="loading-state">
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                    <span>Memuat...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TENTANG -->
         <section id="about">
-            <h2>Tentang</h2>
-            <div id="profile-content">Memuat profil...</div>
+            <div class="section-label">Tentang</div>
+            <div id="profile-content" class="about-content">
+                <div class="loading-state">
+                    <div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>
+                    <span>Memuat...</span>
+                </div>
+            </div>
         </section>
-        <section id="now">
-            <h2>Aktivitas</h2>
-            <div id="portfolio-list" class="grid"></div>
-        </section>
+
+        <!-- TULISAN TERBARU -->
         <section id="journal">
-            <h2>Tulisan Terbaru</h2>
+            <div class="section-label">Tulisan Terbaru</div>
             <div id="blog-list"></div>
-            <div style="text-align:center;"><a href="journal.html" class="btn-journal">Lihat Semua →</a></div>
+            <div>
+                <a href="journal.html" class="btn-all">Lihat semua tulisan →</a>
+            </div>
         </section>
+
     </div>
 
-    <footer>&copy; 2026 Romli Nur Hidayat</footer>
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">Romli Nur Hidayat</div>
+                <div class="footer-sub">Konsultan UMKM · Yogyakarta · &copy; 2026</div>
+            </div>
+            <div class="footer-links">
+                <a href="journal.html">Tulisan</a>
+                <a href="https://wa.me/6282137652772" target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+        </div>
+    </footer>
 
-    <a href="https://wa.me/6282137652772?text=Halo%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
+    <!-- FLOATING WA -->
+    <a href="https://wa.me/6282137652772?text=Halo%20Romli%2C%20saya%20baru%20baca%20romli.pages.dev%20dan%20ingin%20ngobrol%20tentang%20usaha%20saya." class="floating-wa" target="_blank" rel="noopener" title="Chat WhatsApp">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
 
+    <!-- ANALYTICS -->
     <script data-goatcounter="https://romli.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <script>
-        const CONFIG = { user: "romli", repo: "romli-site", sheetUrl: "https://docs.google.com/spreadsheets/d/1E2sWBE7Vh38L-Y4c2Q0UJTMExFpu2CKkWht21LcRKdk/gviz/tq?tqx=out:csv" };
-        async function load() {
-            const p = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
-            document.getElementById('profile-content').innerHTML = marked.parse(await p.text());
-            
-            const b = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
-            const files = (await b.json()).filter(f => f.name.endsWith('.md')).reverse().slice(0,3);
-            const bList = document.getElementById('blog-list');
-            files.forEach(f => {
-                const k = f.name.split('-')[3] || 'umum';
-                const j = f.name.replace(/-/g, ' ').replace('.md', '').substring(11 + k.length + 1);
-                bList.innerHTML += `<div class="card"><small class="category-tag">${k.replace('.',' ')}</small><h3>${j}</h3><a href="post.html?file=${f.name}" style="color:inherit; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca →</a></div>`;
-            });
+        const CONFIG = {
+            user: "romli",
+            repo: "romli-site",
+            sheetUrl: "https://docs.google.com/spreadsheets/d/1E2sWBE7Vh38L-Y4c2Q0UJTMExFpu2CKkWht21LcRKdk/gviz/tq?tqx=out:csv"
+        };
 
-            const n = await fetch(CONFIG.sheetUrl);
-            const rows = (await n.text()).split('\n').slice(1, 7);
-            const nList = document.getElementById('portfolio-list');
-            rows.forEach(r => {
-                const c = r.split('","').map(x => x.replace(/"/g, ''));
-                if(c[0]) nList.innerHTML += `<div class="card"><h3>${c[0]}</h3><p>${c[1]}</p></div>`;
-            });
+        // Format tanggal dari nama file: YYYY-MM-DD
+        function formatDate(dateStr) {
+            const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+            const [y, m, d] = dateStr.split('-');
+            if (!y || !m || !d) return '';
+            return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
         }
-        load();
+
+        // Ambil judul dari nama file dengan aman
+        function getTitleFromFilename(filename) {
+            // Format: YYYY-MM-DD-Kategori-Judul-Artikel.md
+            const withoutExt = filename.replace('.md', '');
+            const parts = withoutExt.split('-');
+            // 3 bagian pertama = tanggal (YYYY, MM, DD), ke-4 = kategori
+            if (parts.length <= 4) return withoutExt;
+            return parts.slice(4).join(' ');
+        }
+
+        function getCategoryFromFilename(filename) {
+            const parts = filename.replace('.md','').split('-');
+            return parts[3] || 'catatan';
+        }
+
+        function getDateFromFilename(filename) {
+            const parts = filename.split('-');
+            if (parts.length >= 3) return `${parts[0]}-${parts[1]}-${parts[2]}`;
+            return '';
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await fetch(`https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/profile.md`);
+                if (!res.ok) throw new Error();
+                const md = await res.text();
+                document.getElementById('profile-content').innerHTML = marked.parse(md);
+            } catch {
+                document.getElementById('profile-content').innerHTML = '<p>Konsultan UMKM bersertifikasi BNSP yang aktif mendampingi pelaku usaha di Yogyakarta.</p>';
+            }
+        }
+
+        async function loadBlog() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${CONFIG.user}/${CONFIG.repo}/contents/blog`);
+                if (!res.ok) throw new Error();
+                const files = (await res.json())
+                    .filter(f => f.name.endsWith('.md'))
+                    .reverse()
+                    .slice(0, 3);
+
+                const container = document.getElementById('blog-list');
+                container.innerHTML = '';
+
+                if (files.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;">Belum ada tulisan.</p>';
+                    return;
+                }
+
+                files.forEach(f => {
+                    const category = getCategoryFromFilename(f.name);
+                    const title = getTitleFromFilename(f.name);
+                    const dateStr = getDateFromFilename(f.name);
+
+                    container.innerHTML += `
+                        <a href="post.html?file=${f.name}" class="blog-item" style="display:flex;flex-direction:column;gap:6px;">
+                            <div class="blog-meta">
+                                <span class="blog-category">${category}</span>
+                                <span class="blog-date">${formatDate(dateStr)}</span>
+                            </div>
+                            <h3>${title}</h3>
+                            <span class="blog-read">Baca →</span>
+                        </a>`;
+                });
+            } catch {
+                document.getElementById('blog-list').innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;">Tidak dapat memuat tulisan saat ini.</p>';
+            }
+        }
+
+        async function loadProyek() {
+            const container = document.getElementById('proyek-list');
+            try {
+                const res = await fetch(CONFIG.sheetUrl);
+                if (!res.ok) throw new Error();
+                const text = await res.text();
+                const rows = text.split('\n').slice(1).filter(r => r.trim());
+
+                container.innerHTML = '';
+                let count = 0;
+
+                rows.forEach(row => {
+                    // Kolom: Nama, Deskripsi, Kategori, Status (aktif/selesai)
+                    const cols = row.split('","').map(x => x.replace(/^"|"$/g, '').trim());
+                    const [nama, desc, kategori, status] = cols;
+                    if (!nama) return;
+                    if (count >= 6) return;
+                    count++;
+
+                    const isAktif = (status || '').toLowerCase().includes('aktif');
+                    container.innerHTML += `
+                        <div class="proyek-item">
+                            <div class="proyek-status">
+                                <div class="status-dot ${isAktif ? 'aktif' : 'selesai'}" title="${isAktif ? 'Sedang berjalan' : 'Selesai'}"></div>
+                            </div>
+                            <div class="proyek-body">
+                                <h3>${nama}</h3>
+                                ${desc ? `<p>${desc}</p>` : ''}
+                                <div class="proyek-meta">
+                                    ${kategori ? `<span class="proyek-tag">${kategori}</span>` : ''}
+                                    ${isAktif ? '<span class="proyek-tag" style="color:var(--text-muted);background:var(--border-soft);">Berlangsung</span>' : ''}
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                if (count === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem);padding:20px 0;">Belum ada proyek yang ditampilkan.</p>';
+                }
+            } catch {
+                container.innerHTML = '<p style="color:var(--text-muted);font-size:0.88rem;padding:20px 0;">Tidak dapat memuat data proyek saat ini.</p>';
+            }
+        }
+
+        // Jalankan semua
+        Promise.all([loadProfile(), loadBlog(), loadProyek()]);
     </script>
 </body>
 </html>
