@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <a href="index.html" style="text-decoration:none; color:black; font-size:0.8rem; position:absolute; left:15px; top:18px;">← Kembali</a>
+        <a href="index.html" style="text-decoration:none; color:inherit; font-size:0.8rem; position:absolute; left:15px; top:18px;">← Kembali</a>
         <h1>Journal</h1>
     </header>
 
@@ -17,10 +17,10 @@
         <div id="filter-bar" class="filter-container">
             <button class="filter-btn active" onclick="filterBy('all')">Semua</button>
         </div>
-        <div id="journal-list" class="grid">Memuat tulisan...</div>
+        <div id="journal-list">Memuat...</div>
         <div class="pagination">
             <button id="prevBtn" class="page-btn" onclick="changePage(-1)">←</button>
-            <span id="pageInfo" style="font-size:0.8rem; color:#999">Halaman 1</span>
+            <span id="pageInfo" style="font-size:0.8rem; color:gray">Halaman 1</span>
             <button id="nextBtn" class="page-btn" onclick="changePage(1)">→</button>
         </div>
     </div>
@@ -30,6 +30,8 @@
     <a href="https://wa.me/6282137652772?text=Halo%2C%20saya%20baru%20saja%20membaca%20romli.pages.dev%20dan%20saya%20tertarik%20berkonsultasi%20mengenai%20UMKM" class="floating-wa" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
+
+    <script data-goatcounter="https://romli.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <script>
         const CONFIG = { user: "romli", repo: "romli-site", perPage: 5 };
@@ -57,14 +59,12 @@
         function render() {
             const list = document.getElementById('journal-list');
             const start = (currentPage - 1) * CONFIG.perPage;
-            const pageFiles = filtered.slice(start, start + CONFIG.perPage);
             list.innerHTML = '';
-            pageFiles.forEach(f => {
-                const parts = f.name.split('-');
-                const kRaw = parts[3] || 'umum';
-                const j = f.name.replace(/-/g, ' ').replace('.md', '').substring(11 + kRaw.length + 1);
-                let tags = kRaw.split('.').map(t => `<span class="category-tag">${t}</span>`).join('');
-                list.innerHTML += `<div class="card">${tags}<h3 style="margin:10px 0">${j}</h3><a href="post.html?file=${f.name}" style="color:black; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca Selengkapnya →</a></div>`;
+            filtered.slice(start, start + CONFIG.perPage).forEach(f => {
+                const k = f.name.split('-')[3] || 'umum';
+                const j = f.name.replace(/-/g, ' ').replace('.md', '').substring(11 + k.length + 1);
+                let tags = k.split('.').map(t => `<span class="category-tag">${t}</span>`).join('');
+                list.innerHTML += `<div class="card">${tags}<h3>${j}</h3><a href="post.html?file=${f.name}" style="color:inherit; font-weight:600; text-decoration:none; font-size:0.85rem;">Baca →</a></div>`;
             });
             document.getElementById('pageInfo').innerText = `Halaman ${currentPage}`;
             document.getElementById('prevBtn').disabled = currentPage === 1;
