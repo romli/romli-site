@@ -10,12 +10,12 @@
 </head>
 <body>
     <header>
-        <a href="journal.html" style="text-decoration:none; color:black; font-size:0.8rem; position:absolute; left:15px; top:18px;">← Kembali</a>
+        <a href="journal.html" style="text-decoration:none; color:inherit; font-size:0.8rem; position:absolute; left:15px; top:18px;">← Kembali</a>
         <h1>Journal</h1>
     </header>
 
     <div class="container">
-        <article id="post-content">Memuat tulisan...</article>
+        <article id="post-content">Memuat...</article>
     </div>
 
     <footer>&copy; 2026 Romli Nur Hidayat</footer>
@@ -24,6 +24,8 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
 
+    <script data-goatcounter="https://romli.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
     <script>
         async function loadPost() {
             const fileName = new URLSearchParams(window.location.search).get('file');
@@ -31,9 +33,17 @@
             try {
                 const res = await fetch(`https://raw.githubusercontent.com/romli/romli-site/main/blog/${fileName}`);
                 const markdown = await res.text();
-                document.getElementById('post-content').innerHTML = marked.parse(markdown);
+                
+                const words = markdown.split(/\s+/).length;
+                const time = Math.ceil(words / 200);
+                
+                const shareTitle = encodeURIComponent("Menarik! Coba baca tulisan ini:");
+                const shareUrl = encodeURIComponent(window.location.href);
+                const shareBar = `<div class="share-bar"><span style="font-size:0.8rem; color:gray;">Bagikan:</span><a class="share-btn" href="https://wa.me/?text=${shareTitle}%20${shareUrl}" target="_blank">WhatsApp</a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank">LinkedIn</a></div>`;
+                
+                document.getElementById('post-content').innerHTML = `<p style="font-size:0.8rem; color:gray; margin-bottom:20px;">☕ ${time} menit membaca</p>` + marked.parse(markdown) + shareBar;
             } catch (e) {
-                document.getElementById('post-content').innerHTML = "Gagal memuat tulisan.";
+                document.getElementById('post-content').innerHTML = "Gagal memuat.";
             }
         }
         loadPost();
