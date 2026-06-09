@@ -1,0 +1,1 @@
+Professional commercial product photography on a seamless, clean solid white background. a clean commercial packshot of the product packaging standing upright. Soft studio lighting with minimal shadows, sharp focus, premium and appetizing commercial look. Aspect ratio 1:1, without any split-screen or collage layouts.
